@@ -11,7 +11,7 @@ public class MainMenu : MonoBehaviour
 
     private SceneSwitcher _sceneSwitcher;
 
-    private void Start()
+    private void Awake()
     {
         _sceneSwitcher = GetComponent<SceneSwitcher>();
 
@@ -20,15 +20,22 @@ public class MainMenu : MonoBehaviour
         _exit.onClick.AddListener(Exit);
     }
 
+    private void OpenOptions()
+    {
+        gameObject.SetActive(false);
+        _optionsMenu.gameObject.SetActive(true);
+    }
+
     private void Exit()
     {       
         Application.Quit();
         Debug.Log("Application closed");
     }
 
-    private void OpenOptions()
+    private void OnDestroy()
     {
-        gameObject.SetActive(false);
-        _optionsMenu.gameObject.SetActive(true);
+        _newgame.onClick.RemoveListener(_sceneSwitcher.LoadMain);
+        _options.onClick.RemoveListener(OpenOptions);
+        _exit.onClick.RemoveListener(Exit);
     }
 }
